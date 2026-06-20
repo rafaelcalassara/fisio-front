@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pulse Studio • Painel do estúdio</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="theme-color" content="#111827" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="admin-app">
+      <aside class="sidebar admin-sidebar">
+        <div>
+          <div class="brand studio-branding">
+            <div class="studio-logo-shell" id="sidebar-logo-shell"></div>
+            <div>
+              <strong id="sidebar-studio-name">Seu estúdio</strong>
+              <span id="sidebar-studio-segment">Painel de gestão</span>
+            </div>
+          </div>
+
+          <nav class="nav admin-nav">
+            <button class="nav-link admin-link active" data-admin-section="dashboard">Dashboard</button>
+            <button class="nav-link admin-link" data-admin-section="agenda">Agenda</button>
+            <button class="nav-link admin-link" data-admin-section="pacientes">Pacientes</button>
+            <button class="nav-link admin-link" data-admin-section="evolucao">Evolução</button>
+            <button class="nav-link admin-link" data-admin-section="planos">Planos</button>
+            <button class="nav-link admin-link" data-admin-section="financeiro">Financeiro</button>
+            <button class="nav-link admin-link" data-admin-section="studio">Estúdio</button>
+          </nav>
+        </div>
+
+        <div class="sidebar-footer admin-footer">
+          <p>Ambiente interno do estúdio.</p>
+          <span>Operação diária separada do site público.</span>
+        </div>
+      </aside>
+
+      <main class="content admin-content">
+        <header class="topbar admin-topbar">
+          <div>
+            <p class="eyebrow">PAINEL DE GESTÃO</p>
+            <h1 id="admin-page-title">Dashboard operacional</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="ghost-btn" id="admin-import-button" type="button">Importar backup</button>
+            <button class="ghost-btn" id="admin-export-button" type="button">Exportar backup</button>
+            <button class="primary-btn" id="logout-button" type="button">Sair</button>
+          </div>
+          <input id="admin-import-file" type="file" accept="application/json" hidden />
+        </header>
+
+        <section class="admin-section active" id="admin-section-dashboard">
+          <div class="dashboard-grid">
+            <article class="card span-3 studio-summary-card">
+              <div class="studio-summary-row">
+                <div class="studio-logo-shell large" id="dashboard-logo-shell"></div>
+                <div>
+                  <p class="eyebrow">ESTÚDIO</p>
+                  <h2 id="dashboard-studio-name">Seu estúdio</h2>
+                  <p class="muted" id="dashboard-studio-meta">Configure nome, contatos e logo na aba Estúdio.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="card span-2">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">HOJE</p>
+                  <h3>Agenda do dia</h3>
+                </div>
+              </div>
+              <div class="agenda-list" id="agenda-list"></div>
+            </article>
+
+            <article class="card">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">MÉTRICAS</p>
+                  <h3>Status rápido</h3>
+                </div>
+              </div>
+              <div class="patient-status" id="patient-status"></div>
+            </article>
+
+            <article class="card span-3">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">OPERAÇÃO</p>
+                  <h3>Fila de atenção</h3>
+                </div>
+              </div>
+              <ul class="check-list" id="queue-list"></ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="admin-section" id="admin-section-agenda">
+          <article class="card">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">AGENDA</p>
+                <h3>Criar e gerenciar sessões</h3>
+              </div>
+            </div>
+
+            <form class="entity-form" id="appointment-form">
+              <input type="hidden" id="appointment-id" />
+              <div class="form-grid">
+                <label><span>Paciente</span><select id="appointment-patient" required></select></label>
+                <label><span>Data</span><input id="appointment-date" type="date" required /></label>
+                <label><span>Hora</span><input id="appointment-time" type="time" required /></label>
+                <label><span>Tipo</span><input id="appointment-type" type="text" placeholder="Ex.: Pilates clínico" required /></label>
+                <label>
+                  <span>Status</span>
+                  <select id="appointment-status" required>
+                    <option value="confirmado">Confirmado</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="faltou">Faltou</option>
+                    <option value="concluido">Concluído</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
+                </label>
+                <label><span>Valor da sessão</span><input id="appointment-fee" type="number" min="0" step="0.01" placeholder="0,00" /></label>
+              </div>
+              <label><span>Observações</span><textarea id="appointment-notes" rows="3" placeholder="Observações do atendimento"></textarea></label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="appointment-submit">Salvar sessão</button>
+                <button class="ghost-btn" type="button" id="appointment-cancel">Cancelar edição</button>
+              </div>
+            </form>
+
+            <div class="week-grid" id="week-grid"></div>
+            <div class="entity-list" id="appointments-table"></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="admin-section-pacientes">
+          <article class="card">
+            <div class="section-heading compact"><div><p class="eyebrow">PACIENTES</p><h3>Cadastro e acompanhamento</h3></div></div>
+            <form class="entity-form" id="patient-form">
+              <input type="hidden" id="patient-id" />
+              <div class="form-grid">
+                <label><span>Nome</span><input id="patient-name" type="text" required /></label>
+                <label><span>Idade</span><input id="patient-age" type="number" min="0" max="120" /></label>
+                <label><span>Queixa principal</span><input id="patient-complaint" type="text" placeholder="Ex.: lombalgia" required /></label>
+                <label><span>Frequência</span><input id="patient-frequency" type="text" placeholder="Ex.: 2x/semana" /></label>
+              </div>
+              <label><span>Tags</span><input id="patient-tags" type="text" placeholder="Separar por vírgula" /></label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="patient-submit">Salvar paciente</button>
+                <button class="ghost-btn" type="button" id="patient-cancel">Cancelar edição</button>
+              </div>
+            </form>
+            <div class="patient-cards" id="patient-cards"></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="admin-section-evolucao">
+          <article class="card">
+            <div class="section-heading compact"><div><p class="eyebrow">EVOLUÇÃO</p><h3>Prontuário por atendimento</h3></div></div>
+            <form class="entity-form" id="evolution-form">
+              <input type="hidden" id="evolution-id" />
+              <div class="form-grid">
+                <label><span>Paciente</span><select id="evolution-patient" required></select></label>
+                <label><span>Data</span><input id="evolution-date" type="date" required /></label>
+                <label><span>Dor (0-10)</span><input id="evolution-pain" type="number" min="0" max="10" /></label>
+              </div>
+              <label><span>Resumo clínico</span><textarea id="evolution-summary" rows="4" placeholder="O que aconteceu na sessão" required></textarea></label>
+              <label><span>Próximos passos</span><textarea id="evolution-next" rows="3" placeholder="Conduta / próximos passos"></textarea></label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="evolution-submit">Salvar evolução</button>
+                <button class="ghost-btn" type="button" id="evolution-cancel">Cancelar edição</button>
+              </div>
+            </form>
+            <div class="timeline" id="timeline"></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="admin-section-planos">
+          <article class="card">
+            <div class="section-heading compact"><div><p class="eyebrow">PLANOS</p><h3>Planos terapêuticos</h3></div></div>
+            <form class="entity-form" id="plan-form">
+              <input type="hidden" id="plan-id" />
+              <div class="form-grid">
+                <label><span>Paciente</span><select id="plan-patient" required></select></label>
+                <label><span>Título do plano</span><input id="plan-title" type="text" placeholder="Ex.: Pós-operatório joelho" required /></label>
+              </div>
+              <label><span>Objetivos</span><textarea id="plan-goals" rows="3" placeholder="Metas terapêuticas" required></textarea></label>
+              <label><span>Exercícios / protocolo</span><textarea id="plan-exercises" rows="4" placeholder="Lista do que será feito"></textarea></label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="plan-submit">Salvar plano</button>
+                <button class="ghost-btn" type="button" id="plan-cancel">Cancelar edição</button>
+              </div>
+            </form>
+            <div class="plan-grid" id="plan-grid"></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="admin-section-financeiro">
+          <article class="card">
+            <div class="section-heading compact"><div><p class="eyebrow">FINANCEIRO</p><h3>Recebimentos e pendências</h3></div></div>
+            <form class="entity-form" id="finance-form">
+              <input type="hidden" id="finance-id" />
+              <div class="form-grid">
+                <label><span>Paciente</span><select id="finance-patient" required></select></label>
+                <label><span>Descrição</span><input id="finance-description" type="text" placeholder="Ex.: pacote mensal" required /></label>
+                <label><span>Vencimento</span><input id="finance-date" type="date" required /></label>
+                <label><span>Valor</span><input id="finance-amount" type="number" min="0" step="0.01" required /></label>
+                <label>
+                  <span>Status</span>
+                  <select id="finance-status" required>
+                    <option value="pendente">Pendente</option>
+                    <option value="pago">Pago</option>
+                    <option value="atrasado">Atrasado</option>
+                  </select>
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="finance-submit">Salvar lançamento</button>
+                <button class="ghost-btn" type="button" id="finance-cancel">Cancelar edição</button>
+              </div>
+            </form>
+            <div class="finance-grid" id="finance-grid"></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="admin-section-studio">
+          <article class="card">
+            <div class="section-heading compact"><div><p class="eyebrow">ESTÚDIO</p><h3>Perfil e identidade do cliente</h3></div></div>
+            <div class="studio-profile-grid">
+              <div class="studio-logo-panel">
+                <div class="studio-logo-shell xl" id="studio-settings-logo"></div>
+                <p class="muted">O logo enviado aqui pertence ao estúdio e aparece só no ambiente de gestão dele.</p>
+                <label class="upload-button" for="studio-logo-input">Subir logo do estúdio</label>
+                <input id="studio-logo-input" type="file" accept="image/*" hidden />
+                <button class="ghost-inline" type="button" id="remove-studio-logo">Remover logo</button>
+              </div>
+              <form class="entity-form" id="studio-form">
+                <div class="form-grid">
+                  <label><span>Nome do estúdio</span><input id="studio-name" type="text" required /></label>
+                  <label><span>Segmento</span><input id="studio-segment" type="text" required /></label>
+                  <label><span>E-mail</span><input id="studio-email" type="email" /></label>
+                  <label><span>Telefone</span><input id="studio-phone" type="text" /></label>
+                  <label class="span-2-field"><span>Endereço</span><input id="studio-address" type="text" /></label>
+                </div>
+                <label><span>Descrição interna</span><textarea id="studio-bio" rows="4" placeholder="Resumo do estúdio, diferenciais ou observações internas"></textarea></label>
+                <div class="form-actions">
+                  <button class="primary-btn" type="submit" id="studio-submit">Salvar perfil do estúdio</button>
+                </div>
+              </form>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pulse Studio • Acesso do estúdio</title>
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
+    <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
+    <meta name="theme-color" content="#111827" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="auth-page-shell">
+      <section class="auth-page-card card">
+        <div class="auth-page-topbar">
+          <a class="ghost-inline" href="./index.html">Voltar para o site</a>
+        </div>
+
+        <div class="auth-page-grid">
+          <div class="auth-page-copy">
+            <div class="marketing-brand">
+              <div class="product-mark">P</div>
+              <div>
+                <strong>Pulse Studio</strong>
+                <span>Acesso do estúdio</span>
+              </div>
+            </div>
+            <h1 id="auth-title">Entrar no painel</h1>
+            <p id="auth-subtitle">Acesso restrito ao gestor do estúdio.</p>
+            <p class="muted">O ambiente operacional fica separado da landing e leva o gestor direto para o sistema.</p>
+          </div>
+
+          <div>
+            <form id="setup-form" class="entity-form hidden">
+              <div class="form-grid">
+                <label>
+                  <span>Nome do estúdio</span>
+                  <input id="setup-studio-name" type="text" required />
+                </label>
+                <label>
+                  <span>Segmento</span>
+                  <input id="setup-studio-segment" type="text" value="Pilates e Fisioterapia" required />
+                </label>
+                <label>
+                  <span>E-mail de acesso</span>
+                  <input id="setup-email" type="email" required />
+                </label>
+                <label>
+                  <span>Senha</span>
+                  <input id="setup-password" type="password" minlength="6" required />
+                </label>
+                <label>
+                  <span>Confirmar senha</span>
+                  <input id="setup-password-confirm" type="password" minlength="6" required />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" id="setup-submit" type="submit">Configurar estúdio</button>
+              </div>
+            </form>
+
+            <form id="login-form" class="entity-form hidden">
+              <div class="form-grid single-column">
+                <label>
+                  <span>E-mail</span>
+                  <input id="login-email" type="email" required />
+                </label>
+                <label>
+                  <span>Senha</span>
+                  <input id="login-password" type="password" required />
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" id="login-submit" type="submit">Entrar</button>
+              </div>
+            </form>
+
+            <p class="auth-note" id="auth-note"></p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
