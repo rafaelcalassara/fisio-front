@@ -17,7 +17,7 @@
             <div class="brand-mark">F</div>
             <div>
               <strong>Fisio</strong>
-              <span>Operação clínica</span>
+              <span>Operação clínica real</span>
             </div>
           </div>
 
@@ -32,30 +32,32 @@
         </div>
 
         <div class="sidebar-footer">
-          <p>Versão inicial pensada para clínica de fisioterapia/pilates.</p>
-          <span>Foco: operação simples, agenda e prontuário.</span>
+          <p>Sem mock.</p>
+          <span>Os dados ficam persistidos no navegador deste dispositivo até entrar backend.</span>
         </div>
       </aside>
 
       <main class="content">
         <header class="topbar">
           <div>
-            <p class="eyebrow">Protótipo publicável</p>
-            <h1>Frontend base para a aplicação de fisio</h1>
+            <p class="eyebrow">Aplicação funcional</p>
+            <h1>Fisio operacional com persistência local</h1>
           </div>
           <div class="topbar-actions">
-            <button class="ghost-btn">Exportar agenda</button>
-            <button class="primary-btn">Nova sessão</button>
+            <button class="ghost-btn" id="import-button" type="button">Importar dados</button>
+            <button class="ghost-btn" id="export-button" type="button">Exportar dados</button>
+            <button class="primary-btn" id="new-patient-button" type="button">Novo paciente</button>
           </div>
+          <input id="import-file" type="file" accept="application/json" hidden />
         </header>
 
         <section class="hero-card">
           <div>
             <p class="eyebrow">Objetivo do sistema</p>
-            <h2>Tirar a operação do WhatsApp e colocar numa tela simples.</h2>
+            <h2>Rodar agenda, paciente, evolução e cobrança sem planilha espalhada.</h2>
             <p>
-              Agenda, pacientes, evolução, planos e visão financeira numa base só,
-              sem virar um ERP pesado.
+              Esta versão funciona de verdade no navegador: cadastra, edita, exclui,
+              persiste e recalcula os indicadores na hora.
             </p>
           </div>
           <div class="hero-metrics" id="hero-metrics"></div>
@@ -67,7 +69,7 @@
               <p class="eyebrow">Requisitos já mapeados</p>
               <h3>O que já temos de concreto</h3>
             </div>
-            <span class="badge">v0 mapeado</span>
+            <span class="badge">v1 funcional</span>
           </div>
           <div class="requirements-grid" id="requirements-grid"></div>
         </section>
@@ -80,7 +82,7 @@
                   <p class="eyebrow">Hoje</p>
                   <h3>Agenda do dia</h3>
                 </div>
-                <span class="badge success">Operação viva</span>
+                <span class="badge success">ao vivo</span>
               </div>
               <div class="agenda-list" id="agenda-list"></div>
             </article>
@@ -122,11 +124,57 @@
             <div class="section-heading compact">
               <div>
                 <p class="eyebrow">Agenda</p>
-                <h3>Visão semanal</h3>
+                <h3>Criar e gerenciar sessões</h3>
               </div>
-              <span class="badge">simples primeiro</span>
+              <span class="badge">persistido</span>
             </div>
+
+            <form class="entity-form" id="appointment-form">
+              <input type="hidden" id="appointment-id" />
+              <div class="form-grid">
+                <label>
+                  <span>Paciente</span>
+                  <select id="appointment-patient" required></select>
+                </label>
+                <label>
+                  <span>Data</span>
+                  <input id="appointment-date" type="date" required />
+                </label>
+                <label>
+                  <span>Hora</span>
+                  <input id="appointment-time" type="time" required />
+                </label>
+                <label>
+                  <span>Tipo</span>
+                  <input id="appointment-type" type="text" placeholder="Ex.: Pilates clínico" required />
+                </label>
+                <label>
+                  <span>Status</span>
+                  <select id="appointment-status" required>
+                    <option value="confirmado">Confirmado</option>
+                    <option value="pendente">Pendente</option>
+                    <option value="faltou">Faltou</option>
+                    <option value="concluido">Concluído</option>
+                    <option value="cancelado">Cancelado</option>
+                  </select>
+                </label>
+                <label>
+                  <span>Valor da sessão</span>
+                  <input id="appointment-fee" type="number" min="0" step="0.01" placeholder="0,00" />
+                </label>
+              </div>
+              <label>
+                <span>Observações</span>
+                <textarea id="appointment-notes" rows="3" placeholder="Observações do atendimento"></textarea>
+              </label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="appointment-submit">Salvar sessão</button>
+                <button class="ghost-btn" type="button" id="appointment-cancel">Cancelar edição</button>
+              </div>
+            </form>
+
             <div class="week-grid" id="week-grid"></div>
+            <div class="entity-list" id="appointments-table"></div>
           </article>
         </section>
 
@@ -135,9 +183,40 @@
             <div class="section-heading compact">
               <div>
                 <p class="eyebrow">Pacientes</p>
-                <h3>Cadastro resumido</h3>
+                <h3>Cadastro real</h3>
               </div>
             </div>
+
+            <form class="entity-form" id="patient-form">
+              <input type="hidden" id="patient-id" />
+              <div class="form-grid">
+                <label>
+                  <span>Nome</span>
+                  <input id="patient-name" type="text" required />
+                </label>
+                <label>
+                  <span>Idade</span>
+                  <input id="patient-age" type="number" min="0" max="120" />
+                </label>
+                <label>
+                  <span>Queixa principal</span>
+                  <input id="patient-complaint" type="text" placeholder="Ex.: lombalgia" required />
+                </label>
+                <label>
+                  <span>Frequência</span>
+                  <input id="patient-frequency" type="text" placeholder="Ex.: 2x/semana" />
+                </label>
+              </div>
+              <label>
+                <span>Tags</span>
+                <input id="patient-tags" type="text" placeholder="Separar por vírgula" />
+              </label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="patient-submit">Salvar paciente</button>
+                <button class="ghost-btn" type="button" id="patient-cancel">Cancelar edição</button>
+              </div>
+            </form>
+
             <div class="patient-cards" id="patient-cards"></div>
           </article>
         </section>
@@ -147,9 +226,40 @@
             <div class="section-heading compact">
               <div>
                 <p class="eyebrow">Prontuário</p>
-                <h3>Evolução de atendimentos</h3>
+                <h3>Evolução por atendimento</h3>
               </div>
             </div>
+
+            <form class="entity-form" id="evolution-form">
+              <input type="hidden" id="evolution-id" />
+              <div class="form-grid">
+                <label>
+                  <span>Paciente</span>
+                  <select id="evolution-patient" required></select>
+                </label>
+                <label>
+                  <span>Data</span>
+                  <input id="evolution-date" type="date" required />
+                </label>
+                <label>
+                  <span>Dor (0-10)</span>
+                  <input id="evolution-pain" type="number" min="0" max="10" />
+                </label>
+              </div>
+              <label>
+                <span>Resumo clínico</span>
+                <textarea id="evolution-summary" rows="4" placeholder="O que aconteceu na sessão" required></textarea>
+              </label>
+              <label>
+                <span>Próximos passos</span>
+                <textarea id="evolution-next" rows="3" placeholder="Conduta / próximos passos"></textarea>
+              </label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="evolution-submit">Salvar evolução</button>
+                <button class="ghost-btn" type="button" id="evolution-cancel">Cancelar edição</button>
+              </div>
+            </form>
+
             <div class="timeline" id="timeline"></div>
           </article>
         </section>
@@ -162,6 +272,33 @@
                 <h3>Protocolos e exercícios</h3>
               </div>
             </div>
+
+            <form class="entity-form" id="plan-form">
+              <input type="hidden" id="plan-id" />
+              <div class="form-grid">
+                <label>
+                  <span>Paciente</span>
+                  <select id="plan-patient" required></select>
+                </label>
+                <label>
+                  <span>Título do plano</span>
+                  <input id="plan-title" type="text" placeholder="Ex.: Pós-operatório joelho" required />
+                </label>
+              </div>
+              <label>
+                <span>Objetivos</span>
+                <textarea id="plan-goals" rows="3" placeholder="Metas terapêuticas" required></textarea>
+              </label>
+              <label>
+                <span>Exercícios / protocolo</span>
+                <textarea id="plan-exercises" rows="4" placeholder="Lista do que será feito"></textarea>
+              </label>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="plan-submit">Salvar plano</button>
+                <button class="ghost-btn" type="button" id="plan-cancel">Cancelar edição</button>
+              </div>
+            </form>
+
             <div class="plan-grid" id="plan-grid"></div>
           </article>
         </section>
@@ -171,9 +308,44 @@
             <div class="section-heading compact">
               <div>
                 <p class="eyebrow">Financeiro</p>
-                <h3>Receita e inadimplência</h3>
+                <h3>Recebimentos e pendências</h3>
               </div>
             </div>
+
+            <form class="entity-form" id="finance-form">
+              <input type="hidden" id="finance-id" />
+              <div class="form-grid">
+                <label>
+                  <span>Paciente</span>
+                  <select id="finance-patient" required></select>
+                </label>
+                <label>
+                  <span>Descrição</span>
+                  <input id="finance-description" type="text" placeholder="Ex.: pacote mensal" required />
+                </label>
+                <label>
+                  <span>Vencimento</span>
+                  <input id="finance-date" type="date" required />
+                </label>
+                <label>
+                  <span>Valor</span>
+                  <input id="finance-amount" type="number" min="0" step="0.01" required />
+                </label>
+                <label>
+                  <span>Status</span>
+                  <select id="finance-status" required>
+                    <option value="pendente">Pendente</option>
+                    <option value="pago">Pago</option>
+                    <option value="atrasado">Atrasado</option>
+                  </select>
+                </label>
+              </div>
+              <div class="form-actions">
+                <button class="primary-btn" type="submit" id="finance-submit">Salvar lançamento</button>
+                <button class="ghost-btn" type="button" id="finance-cancel">Cancelar edição</button>
+              </div>
+            </form>
+
             <div class="finance-grid" id="finance-grid"></div>
           </article>
         </section>

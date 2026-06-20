@@ -469,6 +469,130 @@ svg {
   font-weight: 700;
 }
 
+.entity-form {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid rgba(194, 207, 226, 0.7);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, #f9fbff 0%, #f3f7ff 100%);
+}
+
+.entity-form label {
+  display: grid;
+  gap: 8px;
+}
+
+.entity-form span {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.entity-form input,
+.entity-form select,
+.entity-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 14px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+}
+
+.entity-form textarea {
+  resize: vertical;
+  min-height: 88px;
+}
+
+.entity-form input:focus,
+.entity-form select:focus,
+.entity-form textarea:focus {
+  outline: 2px solid rgba(49, 94, 251, 0.16);
+  border-color: var(--primary);
+}
+
+.form-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.entity-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.entity-card {
+  display: grid;
+  gap: 14px;
+  padding: 16px;
+  border: 1px solid rgba(194, 207, 226, 0.7);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.entity-card strong {
+  display: block;
+}
+
+.entity-card p {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+.entity-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.compact-actions {
+  margin-top: 12px;
+}
+
+.ghost-inline,
+.danger-inline {
+  border: 0;
+  border-radius: 999px;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.ghost-inline {
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.danger-inline {
+  background: #feecec;
+  color: var(--danger);
+}
+
+.empty-state {
+  padding: 18px;
+  border-radius: var(--radius-lg);
+  border: 1px dashed var(--line);
+  background: #f8fbff;
+}
+
+.empty-state p {
+  margin: 0;
+  color: var(--muted);
+}
+
 .section {
   display: none;
 }
@@ -504,6 +628,14 @@ svg {
 
   .patient-status,
   .dashboard-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .form-actions {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
@@ -581,6 +713,11 @@ svg {
   .plan-grid,
   .finance-grid {
     grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .entity-card {
+    grid-template-columns: 1fr auto;
+    align-items: center;
   }
 }
 
