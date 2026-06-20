@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="RC Pilates e Fisioterapia">
+  <defs>
+    <linearGradient id="gold" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f1e2b2"/>
+      <stop offset="45%" stop-color="#d8bf7a"/>
+      <stop offset="100%" stop-color="#a98a48"/>
+    </linearGradient>
+  </defs>
+  <rect width="512" height="512" rx="120" fill="#241c1b"/>
+  <circle cx="256" cy="256" r="188" fill="none" stroke="url(#gold)" stroke-width="10" opacity="0.9"/>
+  <path d="M112 318c34-24 60-34 92-34 35 0 60 9 92 34 33 25 58 34 92 34 10 0 20-1 32-4" fill="none" stroke="url(#gold)" stroke-width="10" stroke-linecap="round" opacity="0.75"/>
+  <text x="256" y="305" text-anchor="middle" font-size="190" font-family="Georgia, 'Times New Roman', serif" font-weight="700" fill="url(#gold)">RC</text>
+</svg>

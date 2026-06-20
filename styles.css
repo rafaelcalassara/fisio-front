@@ -1,16 +1,19 @@
 :root {
-  --bg: #f4f7fb;
-  --surface: #ffffff;
-  --surface-alt: #eef4ff;
-  --text: #162033;
-  --muted: #66728a;
-  --line: #dbe4f0;
-  --primary: #315efb;
-  --primary-soft: #e8eeff;
-  --success: #179b62;
-  --warning: #ef8f1d;
-  --danger: #e05151;
-  --shadow: 0 18px 44px rgba(31, 54, 88, 0.12);
+  --bg: #f6f0e7;
+  --surface: #fffaf2;
+  --surface-alt: #f1e7d4;
+  --text: #2d2422;
+  --muted: #766659;
+  --line: #dcc8a2;
+  --primary: #c7a85f;
+  --primary-strong: #a88946;
+  --primary-soft: #f2e7c9;
+  --success: #66795b;
+  --warning: #c08c4a;
+  --danger: #b85d53;
+  --sidebar-bg: rgba(36, 28, 27, 0.98);
+  --sidebar-text: #f7efdf;
+  --shadow: 0 18px 44px rgba(72, 52, 35, 0.14);
   --radius-xl: 24px;
   --radius-lg: 18px;
   --radius-md: 14px;
@@ -26,7 +29,7 @@ html {
 
 body {
   margin: 0;
-  background: linear-gradient(180deg, #eff4ff 0%, var(--bg) 100%);
+  background: linear-gradient(180deg, #f0e5d2 0%, var(--bg) 100%);
   color: var(--text);
   font-family: Inter, system-ui, sans-serif;
 }
@@ -51,8 +54,8 @@ svg {
   position: sticky;
   top: 0;
   z-index: 10;
-  background: rgba(17, 24, 39, 0.96);
-  color: #f8fbff;
+  background: var(--sidebar-bg);
+  color: var(--sidebar-text);
   padding: 16px;
   display: grid;
   gap: 16px;
@@ -72,7 +75,7 @@ svg {
 }
 
 .brand span {
-  color: #b4c1d9;
+  color: #d6c39a;
   font-size: 0.88rem;
   margin-top: 2px;
 }
@@ -81,11 +84,13 @@ svg {
   width: 42px;
   height: 42px;
   border-radius: 14px;
-  background: linear-gradient(135deg, #5b86ff, #38d7c6);
+  background: radial-gradient(circle at 30% 30%, #f2e7c9, #cfb06c 58%, #8c6f38 100%);
+  color: #2b211f;
   display: grid;
   place-items: center;
   font-weight: 800;
   flex: 0 0 auto;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.45);
 }
 
 .nav {
@@ -113,8 +118,8 @@ svg {
 
 .nav-link.active,
 .nav-link:hover {
-  background: rgba(255, 255, 255, 0.12);
-  color: #fff;
+  background: rgba(199, 168, 95, 0.18);
+  color: var(--sidebar-text);
 }
 
 .sidebar-footer {
@@ -131,7 +136,7 @@ svg {
 }
 
 .sidebar-footer span {
-  color: #b5c0d6;
+  color: #d9cab0;
   font-size: 0.92rem;
   line-height: 1.5;
 }
@@ -189,13 +194,13 @@ svg {
 }
 
 .primary-btn {
-  background: var(--primary);
-  color: white;
+  background: linear-gradient(135deg, var(--primary), var(--primary-strong));
+  color: #2b211f;
 }
 
 .ghost-btn {
   background: var(--primary-soft);
-  color: var(--primary);
+  color: var(--primary-strong);
 }
 
 .hero-card {
@@ -282,7 +287,7 @@ svg {
 }
 
 .badge.success {
-  background: #e8fbf2;
+  background: #edf2e6;
   color: var(--success);
 }
 
@@ -370,17 +375,17 @@ svg {
 }
 
 .status-chip.ok {
-  background: #e9fbf2;
+  background: #edf2e6;
   color: var(--success);
 }
 
 .status-chip.warn {
-  background: #fff5e8;
+  background: #f7ebd7;
   color: var(--warning);
 }
 
 .status-chip.danger {
-  background: #feecec;
+  background: #f7e3e0;
   color: var(--danger);
 }
 
@@ -476,7 +481,7 @@ svg {
   padding: 16px;
   border: 1px solid rgba(194, 207, 226, 0.7);
   border-radius: var(--radius-lg);
-  background: linear-gradient(180deg, #f9fbff 0%, #f3f7ff 100%);
+  background: linear-gradient(180deg, #fffaf2 0%, #f4ead6 100%);
 }
 
 .entity-form label {
@@ -573,11 +578,11 @@ svg {
 
 .ghost-inline {
   background: var(--primary-soft);
-  color: var(--primary);
+  color: var(--primary-strong);
 }
 
 .danger-inline {
-  background: #feecec;
+  background: #f7e3e0;
   color: var(--danger);
 }
 
@@ -585,7 +590,7 @@ svg {
   padding: 18px;
   border-radius: var(--radius-lg);
   border: 1px dashed var(--line);
-  background: #f8fbff;
+  background: #fbf5eb;
 }
 
 .empty-state p {
