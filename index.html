@@ -3,89 +3,270 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fisio • Operação Clínica</title>
+    <title>Pulse Studio • Gestão para Pilates e Fisioterapia</title>
     <link rel="icon" type="image/svg+xml" href="./favicon.svg" />
     <link rel="apple-touch-icon" href="./apple-touch-icon.png" />
-    <meta name="theme-color" content="#241c1b" />
+    <meta name="theme-color" content="#111827" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <div class="app-shell">
-      <aside class="sidebar">
-        <div>
-          <div class="brand">
-            <div class="brand-mark">F</div>
+    <div id="public-app" class="public-app">
+      <header class="marketing-header">
+        <div class="marketing-brand">
+          <div class="product-mark">P</div>
+          <div>
+            <strong>Pulse Studio</strong>
+            <span>Gestão para estúdios de pilates e fisioterapia</span>
+          </div>
+        </div>
+        <div class="marketing-actions">
+          <button class="ghost-btn" id="open-login" type="button">Acessar gerenciamento</button>
+        </div>
+      </header>
+
+      <main class="marketing-main">
+        <section class="marketing-hero card hero-surface">
+          <div class="hero-copy">
+            <p class="eyebrow">SOFTWARE DE OPERAÇÃO</p>
+            <h1>Agenda, prontuário, planos e financeiro num sistema pensado para o estúdio.</h1>
+            <p>
+              O Pulse Studio organiza o operacional inteiro: paciente, sessão,
+              evolução, cobranças e visão do estúdio em uma experiência simples.
+            </p>
+            <div class="hero-cta-row">
+              <button class="primary-btn" id="hero-login" type="button">Entrar no ambiente de gestão</button>
+              <button class="ghost-btn" id="hero-scroll-features" type="button">Ver funcionalidades</button>
+            </div>
+          </div>
+          <div class="hero-proof-grid">
+            <article class="proof-card">
+              <strong>Agenda organizada</strong>
+              <p>Controle diário, semanal e por paciente.</p>
+            </article>
+            <article class="proof-card">
+              <strong>Prontuário simples</strong>
+              <p>Evolução por sessão com histórico rápido.</p>
+            </article>
+            <article class="proof-card">
+              <strong>Financeiro operacional</strong>
+              <p>Pendências, lançamentos e visão prática do caixa.</p>
+            </article>
+            <article class="proof-card">
+              <strong>Perfil do estúdio</strong>
+              <p>Logo e dados próprios dentro do ambiente de gestão.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="marketing-section" id="features-section">
+          <div class="section-heading marketing-section-heading">
             <div>
-              <strong>Fisio</strong>
-              <span>Operação clínica real</span>
+              <p class="eyebrow">FUNCIONALIDADES</p>
+              <h2>Tudo o que o sistema cobre na operação do estúdio</h2>
+            </div>
+          </div>
+          <div class="feature-grid">
+            <article class="feature-card card">
+              <h3>Agenda operacional</h3>
+              <p>Criação, edição e acompanhamento de sessões com status e valor por atendimento.</p>
+            </article>
+            <article class="feature-card card">
+              <h3>Cadastro de pacientes</h3>
+              <p>Ficha rápida com dados principais, tags e visão resumida do histórico do paciente.</p>
+            </article>
+            <article class="feature-card card">
+              <h3>Evolução clínica</h3>
+              <p>Registro por sessão com dor, resumo clínico e próximos passos.</p>
+            </article>
+            <article class="feature-card card">
+              <h3>Planos terapêuticos</h3>
+              <p>Metas, protocolos e exercícios por paciente dentro do mesmo fluxo.</p>
+            </article>
+            <article class="feature-card card">
+              <h3>Financeiro básico</h3>
+              <p>Lançamentos, status de pagamento e visão de pendências sem planilha paralela.</p>
+            </article>
+            <article class="feature-card card">
+              <h3>Perfil do estúdio</h3>
+              <p>Upload da identidade visual do cliente e dados administrativos no painel interno.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="marketing-section">
+          <div class="section-heading marketing-section-heading">
+            <div>
+              <p class="eyebrow">VISÃO DE PRODUTO</p>
+              <h2>Estrutura da experiência</h2>
+            </div>
+          </div>
+          <div class="journey-grid">
+            <article class="journey-step card">
+              <strong>01. Página pública</strong>
+              <p>Apresenta o sistema, benefícios, módulos e materiais visuais do produto.</p>
+            </article>
+            <article class="journey-step card">
+              <strong>02. Login do gestor</strong>
+              <p>O estúdio entra no ambiente interno por autenticação, separado da página pública.</p>
+            </article>
+            <article class="journey-step card">
+              <strong>03. Operação do dia</strong>
+              <p>O painel mostra agenda, pacientes, evolução, planos, financeiro e configuração do estúdio.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="marketing-section media-section">
+          <div class="section-heading marketing-section-heading">
+            <div>
+              <p class="eyebrow">MATERIAIS VISUAIS</p>
+              <h2>Espaço reservado para prints, vídeos e demonstrações</h2>
+            </div>
+          </div>
+          <div class="media-grid">
+            <article class="media-placeholder card">
+              <span class="media-label">PRINT 01</span>
+              <strong>Visão da agenda</strong>
+              <p>Placeholder para tela real do sistema funcionando.</p>
+            </article>
+            <article class="media-placeholder card">
+              <span class="media-label">PRINT 02</span>
+              <strong>Prontuário e evolução</strong>
+              <p>Placeholder para fluxo clínico e histórico por paciente.</p>
+            </article>
+            <article class="media-placeholder card wide-media">
+              <span class="media-label">VÍDEO / DEMO</span>
+              <strong>Demonstração guiada do sistema</strong>
+              <p>Placeholder para vídeo curto mostrando operação, navegação e resultados práticos.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <section id="auth-panel" class="auth-panel hidden">
+      <div class="auth-card card">
+        <div class="auth-card-header">
+          <div>
+            <p class="eyebrow">AMBIENTE DE GESTÃO</p>
+            <h2 id="auth-title">Entrar no painel</h2>
+            <p id="auth-subtitle">Acesso restrito ao gestor do estúdio.</p>
+          </div>
+          <button class="ghost-inline" id="close-auth" type="button">Fechar</button>
+        </div>
+
+        <form id="setup-form" class="entity-form hidden">
+          <div class="form-grid">
+            <label>
+              <span>Nome do estúdio</span>
+              <input id="setup-studio-name" type="text" required />
+            </label>
+            <label>
+              <span>Segmento</span>
+              <input id="setup-studio-segment" type="text" value="Pilates e Fisioterapia" required />
+            </label>
+            <label>
+              <span>E-mail de acesso</span>
+              <input id="setup-email" type="email" required />
+            </label>
+            <label>
+              <span>Senha</span>
+              <input id="setup-password" type="password" minlength="6" required />
+            </label>
+            <label>
+              <span>Confirmar senha</span>
+              <input id="setup-password-confirm" type="password" minlength="6" required />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="primary-btn" id="setup-submit" type="submit">Configurar estúdio</button>
+          </div>
+        </form>
+
+        <form id="login-form" class="entity-form hidden">
+          <div class="form-grid single-column">
+            <label>
+              <span>E-mail</span>
+              <input id="login-email" type="email" required />
+            </label>
+            <label>
+              <span>Senha</span>
+              <input id="login-password" type="password" required />
+            </label>
+          </div>
+          <div class="form-actions">
+            <button class="primary-btn" id="login-submit" type="submit">Entrar</button>
+          </div>
+        </form>
+
+        <p class="auth-note" id="auth-note"></p>
+      </div>
+    </section>
+
+    <div id="admin-app" class="admin-app hidden">
+      <aside class="sidebar admin-sidebar">
+        <div>
+          <div class="brand studio-branding">
+            <div class="studio-logo-shell" id="sidebar-logo-shell"></div>
+            <div>
+              <strong id="sidebar-studio-name">Seu estúdio</strong>
+              <span id="sidebar-studio-segment">Painel de gestão</span>
             </div>
           </div>
 
-          <nav class="nav">
-            <button class="nav-link active" data-section="dashboard">Dashboard</button>
-            <button class="nav-link" data-section="agenda">Agenda</button>
-            <button class="nav-link" data-section="pacientes">Pacientes</button>
-            <button class="nav-link" data-section="evolucao">Evolução</button>
-            <button class="nav-link" data-section="planos">Planos</button>
-            <button class="nav-link" data-section="financeiro">Financeiro</button>
+          <nav class="nav admin-nav">
+            <button class="nav-link admin-link active" data-admin-section="dashboard">Dashboard</button>
+            <button class="nav-link admin-link" data-admin-section="agenda">Agenda</button>
+            <button class="nav-link admin-link" data-admin-section="pacientes">Pacientes</button>
+            <button class="nav-link admin-link" data-admin-section="evolucao">Evolução</button>
+            <button class="nav-link admin-link" data-admin-section="planos">Planos</button>
+            <button class="nav-link admin-link" data-admin-section="financeiro">Financeiro</button>
+            <button class="nav-link admin-link" data-admin-section="studio">Estúdio</button>
           </nav>
         </div>
 
-        <div class="sidebar-footer">
-          <p>Sem mock.</p>
-          <span>Os dados ficam persistidos no navegador deste dispositivo até entrar backend.</span>
+        <div class="sidebar-footer admin-footer">
+          <p>Ambiente interno do estúdio.</p>
+          <span>Separado da landing pública e protegido por login local desta base frontend.</span>
         </div>
       </aside>
 
-      <main class="content">
-        <header class="topbar">
+      <main class="content admin-content">
+        <header class="topbar admin-topbar">
           <div>
-            <p class="eyebrow">Aplicação funcional</p>
-            <h1>Fisio operacional com persistência local</h1>
+            <p class="eyebrow">PAINEL DE GESTÃO</p>
+            <h1 id="admin-page-title">Dashboard operacional</h1>
           </div>
           <div class="topbar-actions">
-            <button class="ghost-btn" id="import-button" type="button">Importar dados</button>
-            <button class="ghost-btn" id="export-button" type="button">Exportar dados</button>
-            <button class="primary-btn" id="new-patient-button" type="button">Novo paciente</button>
+            <button class="ghost-btn" id="admin-import-button" type="button">Importar backup</button>
+            <button class="ghost-btn" id="admin-export-button" type="button">Exportar backup</button>
+            <button class="primary-btn" id="logout-button" type="button">Sair</button>
           </div>
-          <input id="import-file" type="file" accept="application/json" hidden />
+          <input id="admin-import-file" type="file" accept="application/json" hidden />
         </header>
 
-        <section class="hero-card">
-          <div>
-            <p class="eyebrow">Objetivo do sistema</p>
-            <h2>Rodar agenda, paciente, evolução e cobrança sem planilha espalhada.</h2>
-            <p>
-              Esta versão funciona de verdade no navegador: cadastra, edita, exclui,
-              persiste e recalcula os indicadores na hora.
-            </p>
-          </div>
-          <div class="hero-metrics" id="hero-metrics"></div>
-        </section>
-
-        <section class="requirements-panel card">
-          <div class="section-heading">
-            <div>
-              <p class="eyebrow">Requisitos já mapeados</p>
-              <h3>O que já temos de concreto</h3>
-            </div>
-            <span class="badge">v1 funcional</span>
-          </div>
-          <div class="requirements-grid" id="requirements-grid"></div>
-        </section>
-
-        <section class="section active" id="section-dashboard">
+        <section class="admin-section active" id="admin-section-dashboard">
           <div class="dashboard-grid">
+            <article class="card span-3 studio-summary-card">
+              <div class="studio-summary-row">
+                <div class="studio-logo-shell large" id="dashboard-logo-shell"></div>
+                <div>
+                  <p class="eyebrow">ESTÚDIO</p>
+                  <h2 id="dashboard-studio-name">Seu estúdio</h2>
+                  <p class="muted" id="dashboard-studio-meta">Configure nome, contatos e logo na aba Estúdio.</p>
+                </div>
+              </div>
+            </article>
+
             <article class="card span-2">
               <div class="section-heading compact">
                 <div>
-                  <p class="eyebrow">Hoje</p>
+                  <p class="eyebrow">HOJE</p>
                   <h3>Agenda do dia</h3>
                 </div>
-                <span class="badge success">ao vivo</span>
               </div>
               <div class="agenda-list" id="agenda-list"></div>
             </article>
@@ -93,43 +274,32 @@
             <article class="card">
               <div class="section-heading compact">
                 <div>
-                  <p class="eyebrow">Pacientes</p>
+                  <p class="eyebrow">MÉTRICAS</p>
                   <h3>Status rápido</h3>
                 </div>
               </div>
               <div class="patient-status" id="patient-status"></div>
             </article>
 
-            <article class="card">
+            <article class="card span-3">
               <div class="section-heading compact">
                 <div>
-                  <p class="eyebrow">Pendências</p>
-                  <h3>Fila operacional</h3>
+                  <p class="eyebrow">OPERAÇÃO</p>
+                  <h3>Fila de atenção</h3>
                 </div>
               </div>
               <ul class="check-list" id="queue-list"></ul>
             </article>
-
-            <article class="card span-3">
-              <div class="section-heading compact">
-                <div>
-                  <p class="eyebrow">Loop</p>
-                  <h3>Ciclo de desenvolvimento sugerido</h3>
-                </div>
-              </div>
-              <div class="loop-grid" id="loop-grid"></div>
-            </article>
           </div>
         </section>
 
-        <section class="section" id="section-agenda">
+        <section class="admin-section" id="admin-section-agenda">
           <article class="card">
             <div class="section-heading compact">
               <div>
-                <p class="eyebrow">Agenda</p>
+                <p class="eyebrow">AGENDA</p>
                 <h3>Criar e gerenciar sessões</h3>
               </div>
-              <span class="badge">persistido</span>
             </div>
 
             <form class="entity-form" id="appointment-form">
@@ -181,12 +351,12 @@
           </article>
         </section>
 
-        <section class="section" id="section-pacientes">
+        <section class="admin-section" id="admin-section-pacientes">
           <article class="card">
             <div class="section-heading compact">
               <div>
-                <p class="eyebrow">Pacientes</p>
-                <h3>Cadastro real</h3>
+                <p class="eyebrow">PACIENTES</p>
+                <h3>Cadastro e acompanhamento</h3>
               </div>
             </div>
 
@@ -224,12 +394,12 @@
           </article>
         </section>
 
-        <section class="section" id="section-evolucao">
+        <section class="admin-section" id="admin-section-evolucao">
           <article class="card">
             <div class="section-heading compact">
               <div>
-                <p class="eyebrow">Prontuário</p>
-                <h3>Evolução por atendimento</h3>
+                <p class="eyebrow">EVOLUÇÃO</p>
+                <h3>Prontuário por atendimento</h3>
               </div>
             </div>
 
@@ -267,12 +437,12 @@
           </article>
         </section>
 
-        <section class="section" id="section-planos">
+        <section class="admin-section" id="admin-section-planos">
           <article class="card">
             <div class="section-heading compact">
               <div>
-                <p class="eyebrow">Plano terapêutico</p>
-                <h3>Protocolos e exercícios</h3>
+                <p class="eyebrow">PLANOS</p>
+                <h3>Planos terapêuticos</h3>
               </div>
             </div>
 
@@ -306,11 +476,11 @@
           </article>
         </section>
 
-        <section class="section" id="section-financeiro">
+        <section class="admin-section" id="admin-section-financeiro">
           <article class="card">
             <div class="section-heading compact">
               <div>
-                <p class="eyebrow">Financeiro</p>
+                <p class="eyebrow">FINANCEIRO</p>
                 <h3>Recebimentos e pendências</h3>
               </div>
             </div>
@@ -350,6 +520,59 @@
             </form>
 
             <div class="finance-grid" id="finance-grid"></div>
+          </article>
+        </section>
+
+        <section class="admin-section" id="admin-section-studio">
+          <article class="card">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">ESTÚDIO</p>
+                <h3>Perfil e identidade do cliente</h3>
+              </div>
+            </div>
+
+            <div class="studio-profile-grid">
+              <div class="studio-logo-panel">
+                <div class="studio-logo-shell xl" id="studio-settings-logo"></div>
+                <p class="muted">O logo enviado aqui pertence ao estúdio e aparece só no ambiente de gestão dele.</p>
+                <label class="upload-button" for="studio-logo-input">Subir logo do estúdio</label>
+                <input id="studio-logo-input" type="file" accept="image/*" hidden />
+                <button class="ghost-inline" type="button" id="remove-studio-logo">Remover logo</button>
+              </div>
+
+              <form class="entity-form" id="studio-form">
+                <div class="form-grid">
+                  <label>
+                    <span>Nome do estúdio</span>
+                    <input id="studio-name" type="text" required />
+                  </label>
+                  <label>
+                    <span>Segmento</span>
+                    <input id="studio-segment" type="text" required />
+                  </label>
+                  <label>
+                    <span>E-mail</span>
+                    <input id="studio-email" type="email" />
+                  </label>
+                  <label>
+                    <span>Telefone</span>
+                    <input id="studio-phone" type="text" />
+                  </label>
+                  <label class="span-2-field">
+                    <span>Endereço</span>
+                    <input id="studio-address" type="text" />
+                  </label>
+                </div>
+                <label>
+                  <span>Descrição interna</span>
+                  <textarea id="studio-bio" rows="4" placeholder="Resumo do estúdio, diferenciais ou observações internas"></textarea>
+                </label>
+                <div class="form-actions">
+                  <button class="primary-btn" type="submit" id="studio-submit">Salvar perfil do estúdio</button>
+                </div>
+              </form>
+            </div>
           </article>
         </section>
       </main>

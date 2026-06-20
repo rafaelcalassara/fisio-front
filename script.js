@@ -1,36 +1,23 @@
-const STORAGE_KEY = 'fisio-app-state-v1';
-
-const requirements = [
-  {
-    title: 'Já mapeado de forma explícita',
-    items: [
-      'Existe um projeto de sistema de fisioterapia para o madrinho do Rafael.',
-      'A aplicação precisa ser publicável no domínio rafaelcalassara.com.br.',
-      'O subdomínio-alvo desta versão é fisio.rafaelcalassara.com.br.',
-      'A preferência é por operação simples, barata e agentic-first.'
-    ]
-  },
-  {
-    title: 'Escopo funcional entregue agora',
-    items: [
-      'Cadastro real de pacientes com persistência local.',
-      'Agenda com criação, edição e exclusão de sessões.',
-      'Prontuário/evolução por atendimento.',
-      'Planos terapêuticos e controle financeiro básico.'
-    ]
-  }
-];
-
-const loop = [
-  { title: 'Mapear', text: 'Capturar o fluxo real da clínica: captação, agenda, sessão, evolução e cobrança.' },
-  { title: 'Desenhar', text: 'Transformar o fluxo em telas mínimas e validar com o fisioterapeuta.' },
-  { title: 'Entregar', text: 'Liberar um slice pequeno, funcional e usável no celular.' },
-  { title: 'Usar', text: 'Rodar no dia a dia real e observar onde trava ou gera retrabalho.' },
-  { title: 'Refinar', text: 'Ajustar primeiro os gargalos operacionais antes de ampliar escopo.' },
-  { title: 'Escalar', text: 'Só depois entrar com automações, relatórios e integrações externas.' }
-];
+const STORAGE_KEY = 'pulse-studio-state-v2';
+const LEGACY_STORAGE_KEY = 'fisio-app-state-v1';
 
 const defaultState = {
+  studio: {
+    name: '',
+    segment: 'Pilates e Fisioterapia',
+    email: '',
+    phone: '',
+    address: '',
+    bio: '',
+    logoDataUrl: ''
+  },
+  auth: {
+    email: '',
+    password: ''
+  },
+  session: {
+    loggedIn: false
+  },
   patients: [],
   appointments: [],
   evolutions: [],
@@ -38,36 +25,77 @@ const defaultState = {
   finances: []
 };
 
+const adminTitles = {
+  dashboard: 'Dashboard operacional',
+  agenda: 'Agenda do estúdio',
+  pacientes: 'Pacientes',
+  evolucao: 'Evolução clínica',
+  planos: 'Planos terapêuticos',
+  financeiro: 'Financeiro',
+  studio: 'Perfil do estúdio'
+};
+
 let state = loadState();
 
 const refs = {
-  heroMetrics: document.getElementById('hero-metrics'),
-  requirementsGrid: document.getElementById('requirements-grid'),
+  publicApp: document.getElementById('public-app'),
+  authPanel: document.getElementById('auth-panel'),
+  adminApp: document.getElementById('admin-app'),
+  authTitle: document.getElementById('auth-title'),
+  authSubtitle: document.getElementById('auth-subtitle'),
+  authNote: document.getElementById('auth-note'),
+  featuresSection: document.getElementById('features-section'),
+  adminPageTitle: document.getElementById('admin-page-title'),
   agendaList: document.getElementById('agenda-list'),
   patientStatus: document.getElementById('patient-status'),
   queueList: document.getElementById('queue-list'),
-  loopGrid: document.getElementById('loop-grid'),
   weekGrid: document.getElementById('week-grid'),
   appointmentsTable: document.getElementById('appointments-table'),
   patientCards: document.getElementById('patient-cards'),
   timeline: document.getElementById('timeline'),
   planGrid: document.getElementById('plan-grid'),
   financeGrid: document.getElementById('finance-grid'),
-  importButton: document.getElementById('import-button'),
-  exportButton: document.getElementById('export-button'),
-  newPatientButton: document.getElementById('new-patient-button'),
-  importFile: document.getElementById('import-file')
+  openLoginButtons: [document.getElementById('open-login'), document.getElementById('hero-login')],
+  closeAuth: document.getElementById('close-auth'),
+  heroScrollFeatures: document.getElementById('hero-scroll-features'),
+  logoutButton: document.getElementById('logout-button'),
+  importButton: document.getElementById('admin-import-button'),
+  exportButton: document.getElementById('admin-export-button'),
+  importFile: document.getElementById('admin-import-file'),
+  sidebarLogoShell: document.getElementById('sidebar-logo-shell'),
+  dashboardLogoShell: document.getElementById('dashboard-logo-shell'),
+  studioSettingsLogo: document.getElementById('studio-settings-logo'),
+  sidebarStudioName: document.getElementById('sidebar-studio-name'),
+  sidebarStudioSegment: document.getElementById('sidebar-studio-segment'),
+  dashboardStudioName: document.getElementById('dashboard-studio-name'),
+  dashboardStudioMeta: document.getElementById('dashboard-studio-meta'),
+  studioLogoInput: document.getElementById('studio-logo-input'),
+  removeStudioLogo: document.getElementById('remove-studio-logo')
 };
 
 const forms = {
+  setup: document.getElementById('setup-form'),
+  login: document.getElementById('login-form'),
   patient: document.getElementById('patient-form'),
   appointment: document.getElementById('appointment-form'),
   evolution: document.getElementById('evolution-form'),
   plan: document.getElementById('plan-form'),
-  finance: document.getElementById('finance-form')
+  finance: document.getElementById('finance-form'),
+  studio: document.getElementById('studio-form')
 };
 
 const inputs = {
+  setup: {
+    studioName: document.getElementById('setup-studio-name'),
+    studioSegment: document.getElementById('setup-studio-segment'),
+    email: document.getElementById('setup-email'),
+    password: document.getElementById('setup-password'),
+    passwordConfirm: document.getElementById('setup-password-confirm')
+  },
+  login: {
+    email: document.getElementById('login-email'),
+    password: document.getElementById('login-password')
+  },
   patient: {
     id: document.getElementById('patient-id'),
     name: document.getElementById('patient-name'),
@@ -118,26 +146,50 @@ const inputs = {
     status: document.getElementById('finance-status'),
     submit: document.getElementById('finance-submit'),
     cancel: document.getElementById('finance-cancel')
+  },
+  studio: {
+    name: document.getElementById('studio-name'),
+    segment: document.getElementById('studio-segment'),
+    email: document.getElementById('studio-email'),
+    phone: document.getElementById('studio-phone'),
+    address: document.getElementById('studio-address'),
+    bio: document.getElementById('studio-bio')
   }
 };
 
-const navLinks = document.querySelectorAll('.nav-link');
-const sections = document.querySelectorAll('.section');
+const adminLinks = document.querySelectorAll('.admin-link');
+const adminSections = document.querySelectorAll('.admin-section');
 
 boot();
 
 function boot() {
-  bindNavigation();
+  bindMarketing();
+  bindAuth();
+  bindAdminNavigation();
   bindTopbar();
   bindForms();
+  syncAuthMode();
+  syncVisibility();
   renderAll();
 }
 
-function bindNavigation() {
-  navLinks.forEach((link) => {
-    link.addEventListener('click', () => {
-      openSection(link.dataset.section);
-    });
+function bindMarketing() {
+  refs.openLoginButtons.forEach((button) => button?.addEventListener('click', openAuthPanel));
+  refs.closeAuth?.addEventListener('click', closeAuthPanel);
+  refs.heroScrollFeatures?.addEventListener('click', () => {
+    refs.featuresSection?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+}
+
+function bindAuth() {
+  forms.setup.addEventListener('submit', handleSetupSubmit);
+  forms.login.addEventListener('submit', handleLoginSubmit);
+  refs.logoutButton.addEventListener('click', logout);
+}
+
+function bindAdminNavigation() {
+  adminLinks.forEach((link) => {
+    link.addEventListener('click', () => openAdminSection(link.dataset.adminSection));
   });
 }
 
@@ -145,11 +197,8 @@ function bindTopbar() {
   refs.exportButton.addEventListener('click', exportState);
   refs.importButton.addEventListener('click', () => refs.importFile.click());
   refs.importFile.addEventListener('change', importState);
-  refs.newPatientButton.addEventListener('click', () => {
-    openSection('pacientes');
-    forms.patient.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    inputs.patient.name.focus();
-  });
+  refs.studioLogoInput.addEventListener('change', handleStudioLogoUpload);
+  refs.removeStudioLogo.addEventListener('click', removeStudioLogo);
 }
 
 function bindForms() {
@@ -158,6 +207,7 @@ function bindForms() {
   forms.evolution.addEventListener('submit', handleEvolutionSubmit);
   forms.plan.addEventListener('submit', handlePlanSubmit);
   forms.finance.addEventListener('submit', handleFinanceSubmit);
+  forms.studio.addEventListener('submit', handleStudioSubmit);
 
   wireSubmitButton(forms.patient, inputs.patient.submit);
   wireSubmitButton(forms.appointment, inputs.appointment.submit);
@@ -182,18 +232,98 @@ function wireSubmitButton(form, button) {
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return structuredClone(defaultState);
-    const parsed = JSON.parse(raw);
-    return {
-      patients: Array.isArray(parsed.patients) ? parsed.patients : [],
-      appointments: Array.isArray(parsed.appointments) ? parsed.appointments : [],
-      evolutions: Array.isArray(parsed.evolutions) ? parsed.evolutions : [],
-      plans: Array.isArray(parsed.plans) ? parsed.plans : [],
-      finances: Array.isArray(parsed.finances) ? parsed.finances : []
-    };
+    if (!raw) {
+      const legacyRaw = localStorage.getItem(LEGACY_STORAGE_KEY);
+      if (!legacyRaw) return cloneDefaultState();
+      const migrated = normalizeState(JSON.parse(legacyRaw));
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(migrated));
+      return migrated;
+    }
+    return normalizeState(JSON.parse(raw));
   } catch {
-    return structuredClone(defaultState);
+    return cloneDefaultState();
   }
+}
+
+function cloneDefaultState() {
+  return JSON.parse(JSON.stringify(defaultState));
+}
+
+function normalizeState(raw) {
+  const source = raw && typeof raw === 'object' ? raw : {};
+  const studio = source.studio && typeof source.studio === 'object' ? source.studio : {};
+  const auth = source.auth && typeof source.auth === 'object' ? source.auth : {};
+  const session = source.session && typeof source.session === 'object' ? source.session : {};
+
+  return {
+    studio: {
+      name: String(studio.name || ''),
+      segment: String(studio.segment || 'Pilates e Fisioterapia'),
+      email: String(studio.email || ''),
+      phone: String(studio.phone || ''),
+      address: String(studio.address || ''),
+      bio: String(studio.bio || ''),
+      logoDataUrl: String(studio.logoDataUrl || '')
+    },
+    auth: {
+      email: String(auth.email || ''),
+      password: String(auth.password || '')
+    },
+    session: {
+      loggedIn: Boolean(session.loggedIn)
+    },
+    patients: Array.isArray(source.patients)
+      ? source.patients.map((item) => ({
+          id: String(item?.id || uid('patient')),
+          name: String(item?.name || 'Paciente sem nome'),
+          age: String(item?.age || ''),
+          complaint: String(item?.complaint || ''),
+          frequency: String(item?.frequency || ''),
+          tags: Array.isArray(item?.tags) ? item.tags.map((tag) => String(tag)) : []
+        }))
+      : [],
+    appointments: Array.isArray(source.appointments)
+      ? source.appointments.map((item) => ({
+          id: String(item?.id || uid('appointment')),
+          patientId: String(item?.patientId || ''),
+          date: normalizeDate(item?.date),
+          time: String(item?.time || ''),
+          type: String(item?.type || ''),
+          status: String(item?.status || 'pendente'),
+          fee: String(item?.fee || ''),
+          notes: String(item?.notes || '')
+        }))
+      : [],
+    evolutions: Array.isArray(source.evolutions)
+      ? source.evolutions.map((item) => ({
+          id: String(item?.id || uid('evolution')),
+          patientId: String(item?.patientId || ''),
+          date: normalizeDate(item?.date),
+          pain: String(item?.pain || ''),
+          summary: String(item?.summary || ''),
+          next: String(item?.next || '')
+        }))
+      : [],
+    plans: Array.isArray(source.plans)
+      ? source.plans.map((item) => ({
+          id: String(item?.id || uid('plan')),
+          patientId: String(item?.patientId || ''),
+          title: String(item?.title || ''),
+          goals: String(item?.goals || ''),
+          exercises: String(item?.exercises || '')
+        }))
+      : [],
+    finances: Array.isArray(source.finances)
+      ? source.finances.map((item) => ({
+          id: String(item?.id || uid('finance')),
+          patientId: String(item?.patientId || ''),
+          description: String(item?.description || ''),
+          date: normalizeDate(item?.date),
+          amount: String(item?.amount || ''),
+          status: String(item?.status || 'pendente')
+        }))
+      : []
+  };
 }
 
 function persist() {
@@ -221,6 +351,11 @@ function shortDate(value) {
   return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit' }).format(new Date(`${value}T00:00:00`));
 }
 
+function fullDate(value) {
+  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return 'Sem data';
+  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(`${value}T00:00:00`));
+}
+
 function formatLocalISO(date) {
   const year = date.getFullYear();
   const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -233,20 +368,11 @@ function normalizeDate(value) {
   return /^\d{4}-\d{2}-\d{2}$/.test(text) ? text : '';
 }
 
-function fullDate(value) {
-  if (!value || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return 'Sem data';
-  return new Intl.DateTimeFormat('pt-BR', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(`${value}T00:00:00`));
-}
-
 function parseTags(text) {
-  return text
+  return String(text || '')
     .split(',')
     .map((item) => item.trim())
     .filter(Boolean);
-}
-
-function getPatientName(patientId) {
-  return state.patients.find((item) => item.id === patientId)?.name || 'Paciente removido';
 }
 
 function escapeHtml(value) {
@@ -262,14 +388,119 @@ function safe(value) {
   return escapeHtml(value);
 }
 
-function saveAndRender() {
+function hasConfiguredAccess() {
+  return Boolean(state.auth.email && state.auth.password);
+}
+
+function getStudioName() {
+  return state.studio.name || 'Seu estúdio';
+}
+
+function getStudioSegment() {
+  return state.studio.segment || 'Painel de gestão';
+}
+
+function getStudioInitials() {
+  const base = getStudioName().trim();
+  if (!base) return 'S';
+  const parts = base.split(/\s+/).slice(0, 2);
+  return parts.map((part) => part[0]).join('').toUpperCase();
+}
+
+function openAuthPanel() {
+  syncAuthMode();
+  refs.authPanel.classList.remove('hidden');
+}
+
+function closeAuthPanel() {
+  refs.authPanel.classList.add('hidden');
+}
+
+function syncAuthMode() {
+  const configured = hasConfiguredAccess();
+  forms.setup.classList.toggle('hidden', configured);
+  forms.login.classList.toggle('hidden', !configured);
+  refs.authTitle.textContent = configured ? 'Entrar no painel' : 'Configurar primeiro acesso';
+  refs.authSubtitle.textContent = configured
+    ? 'Acesso restrito ao gestor do estúdio.'
+    : 'Defina o perfil inicial do estúdio e crie o login local deste ambiente.';
+  if (!configured) {
+    inputs.setup.studioName.value = state.studio.name || '';
+    inputs.setup.studioSegment.value = state.studio.segment || 'Pilates e Fisioterapia';
+    inputs.setup.email.value = state.auth.email || state.studio.email || '';
+  } else {
+    inputs.login.email.value = state.auth.email || '';
+  }
+}
+
+function syncVisibility() {
+  const loggedIn = Boolean(state.session.loggedIn && hasConfiguredAccess());
+  refs.publicApp.classList.toggle('hidden', loggedIn);
+  refs.adminApp.classList.toggle('hidden', !loggedIn);
+  if (loggedIn) {
+    closeAuthPanel();
+  }
+}
+
+function setAuthNote(message, tone = 'neutral') {
+  refs.authNote.textContent = message;
+  refs.authNote.dataset.tone = tone;
+}
+
+function handleSetupSubmit(event) {
+  event.preventDefault();
+  const password = inputs.setup.password.value;
+  const confirmPassword = inputs.setup.passwordConfirm.value;
+  if (password.length < 6) {
+    setAuthNote('A senha precisa ter pelo menos 6 caracteres.', 'danger');
+    return;
+  }
+  if (password !== confirmPassword) {
+    setAuthNote('As senhas não conferem.', 'danger');
+    return;
+  }
+
+  state.studio.name = inputs.setup.studioName.value.trim();
+  state.studio.segment = inputs.setup.studioSegment.value.trim() || 'Pilates e Fisioterapia';
+  state.studio.email = inputs.setup.email.value.trim();
+  state.auth.email = inputs.setup.email.value.trim().toLowerCase();
+  state.auth.password = password;
+  state.session.loggedIn = true;
   persist();
+  forms.setup.reset();
+  setAuthNote('Estúdio configurado com sucesso.', 'success');
+  syncAuthMode();
+  syncVisibility();
   renderAll();
 }
 
+function handleLoginSubmit(event) {
+  event.preventDefault();
+  const email = inputs.login.email.value.trim().toLowerCase();
+  const password = inputs.login.password.value;
+  if (email !== state.auth.email.toLowerCase() || password !== state.auth.password) {
+    setAuthNote('Credenciais inválidas.', 'danger');
+    return;
+  }
+  state.session.loggedIn = true;
+  persist();
+  forms.login.reset();
+  setAuthNote('Login realizado.', 'success');
+  syncVisibility();
+  renderAll();
+}
+
+function logout() {
+  state.session.loggedIn = false;
+  persist();
+  syncVisibility();
+  syncAuthMode();
+  openAuthPanel();
+}
+
 function renderAll() {
-  renderRequirements();
-  renderMetrics();
+  renderStudioBranding();
+  renderStudioForm();
   renderDashboard();
   renderWeekOverview();
   renderAppointmentTable();
@@ -279,46 +510,34 @@ function renderAll() {
   renderFinances();
   populatePatientSelects();
   toggleCancelButtons();
+  syncVisibility();
+  updateAdminTitle();
 }
 
-function renderRequirements() {
-  refs.requirementsGrid.innerHTML = requirements.map((group) => `
-    <article class="requirement-item">
-      <h4>${safe(group.title)}</h4>
-      <ul>${group.items.map((item) => `<li>${safe(item)}</li>`).join('')}</ul>
-    </article>
-  `).join('');
+function renderStudioBranding() {
+  refs.sidebarStudioName.textContent = getStudioName();
+  refs.sidebarStudioSegment.textContent = getStudioSegment();
+  refs.dashboardStudioName.textContent = getStudioName();
 
-  refs.loopGrid.innerHTML = loop.map((item, index) => `
-    <article class="loop-step" data-step="0${index + 1}">
-      <strong>${safe(item.title)}</strong>
-      <p>${safe(item.text)}</p>
-    </article>
-  `).join('');
+  const dashboardBits = [getStudioSegment()];
+  if (state.studio.email) dashboardBits.push(state.studio.email);
+  if (state.studio.phone) dashboardBits.push(state.studio.phone);
+  refs.dashboardStudioMeta.textContent = dashboardBits.join(' • ') || 'Configure nome, contatos e logo na aba Estúdio.';
+
+  [refs.sidebarLogoShell, refs.dashboardLogoShell, refs.studioSettingsLogo].forEach((shell) => {
+    shell.innerHTML = state.studio.logoDataUrl
+      ? `<img class="logo-image" src="${safe(state.studio.logoDataUrl)}" alt="Logo do estúdio" />`
+      : `<span class="logo-fallback">${safe(getStudioInitials())}</span>`;
+  });
 }
 
-function renderMetrics() {
-  const today = todayISO();
-  const currentMonth = today.slice(0, 7);
-  const sessionsToday = state.appointments.filter((item) => item.date === today).length;
-  const pendingFinances = state.finances.filter((item) => item.status !== 'pago');
-  const paidThisMonth = state.finances
-    .filter((item) => item.status === 'pago' && item.date.startsWith(currentMonth))
-    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
-
-  const metrics = [
-    { label: 'pacientes ativos', value: String(state.patients.length) },
-    { label: 'sessões hoje', value: String(sessionsToday) },
-    { label: 'pendências financeiras', value: String(pendingFinances.length) },
-    { label: 'receita paga no mês', value: money(paidThisMonth) }
-  ];
-
-  refs.heroMetrics.innerHTML = metrics.map((metric) => `
-    <div class="metric">
-      <span>${safe(metric.label)}</span>
-      <strong>${safe(metric.value)}</strong>
-    </div>
-  `).join('');
+function renderStudioForm() {
+  inputs.studio.name.value = state.studio.name;
+  inputs.studio.segment.value = state.studio.segment;
+  inputs.studio.email.value = state.studio.email;
+  inputs.studio.phone.value = state.studio.phone;
+  inputs.studio.address.value = state.studio.address;
+  inputs.studio.bio.value = state.studio.bio;
 }
 
 function renderDashboard() {
@@ -344,6 +563,7 @@ function renderDashboard() {
   const endWeek = new Date(startWeek);
   endWeek.setDate(endWeek.getDate() + 6);
   endWeek.setHours(23, 59, 59, 999);
+
   const weeklyAppointments = state.appointments.filter((item) => {
     const date = new Date(`${item.date}T00:00:00`);
     return date >= startWeek && date <= endWeek;
@@ -353,11 +573,16 @@ function renderDashboard() {
     return date >= startWeek && date <= endWeek;
   });
 
+  const currentMonth = today.slice(0, 7);
+  const paidThisMonth = state.finances
+    .filter((item) => item.status === 'pago' && item.date.startsWith(currentMonth))
+    .reduce((sum, item) => sum + Number(item.amount || 0), 0);
+
   const statusMetrics = [
-    { label: 'Em tratamento', value: state.patients.length },
+    { label: 'Pacientes ativos', value: state.patients.length },
     { label: 'Sessões 7 dias', value: weeklyAppointments.length },
     { label: 'Evoluções 7 dias', value: weeklyEvolutions.length },
-    { label: 'Planos ativos', value: state.plans.length }
+    { label: 'Receita paga no mês', value: money(paidThisMonth) }
   ];
 
   refs.patientStatus.innerHTML = statusMetrics.map((metric) => `
@@ -367,19 +592,20 @@ function renderDashboard() {
     </div>
   `).join('');
 
-  const queue = buildQueue();
-  refs.queueList.innerHTML = queue.map((item) => `<li>${safe(item)}</li>`).join('');
+  refs.queueList.innerHTML = buildQueue().map((item) => `<li>${safe(item)}</li>`).join('');
 }
 
 function buildQueue() {
   const queue = [];
+  if (!state.studio.name) queue.push('Complete o perfil do estúdio na aba Estúdio.');
+  if (!state.studio.logoDataUrl) queue.push('Suba o logo do estúdio para personalizar o painel interno.');
   if (!state.patients.length) queue.push('Cadastre o primeiro paciente para começar a operar.');
   if (!state.appointments.length) queue.push('Crie a primeira sessão na agenda.');
   if (state.appointments.length && !state.evolutions.length) queue.push('Registrar a primeira evolução clínica.');
   const overdue = state.finances.filter((item) => item.status !== 'pago' && item.date < todayISO()).length;
   if (overdue) queue.push(`${overdue} cobrança(s) em atraso precisando ação.`);
   if (!state.plans.length && state.patients.length) queue.push('Definir pelo menos um plano terapêutico ativo.');
-  return queue.length ? queue : ['Operação sem pendências críticas agora.'];
+  return queue.length ? queue : ['Operação organizada sem pendências críticas agora.'];
 }
 
 function renderWeekOverview() {
@@ -518,6 +744,7 @@ function bindEntityActions(selector, handler) {
 function populatePatientSelects() {
   const selects = [inputs.appointment.patientId, inputs.evolution.patientId, inputs.plan.patientId, inputs.finance.patientId];
   const options = state.patients.map((patient) => `<option value="${safe(patient.id)}">${safe(patient.name)}</option>`).join('');
+
   selects.forEach((select) => {
     const current = select.value;
     select.innerHTML = state.patients.length
@@ -617,6 +844,46 @@ function handleFinanceSubmit(event) {
   resetFinanceForm();
 }
 
+function handleStudioSubmit(event) {
+  event.preventDefault();
+  state.studio.name = inputs.studio.name.value.trim();
+  state.studio.segment = inputs.studio.segment.value.trim() || 'Pilates e Fisioterapia';
+  state.studio.email = inputs.studio.email.value.trim();
+  state.studio.phone = inputs.studio.phone.value.trim();
+  state.studio.address = inputs.studio.address.value.trim();
+  state.studio.bio = inputs.studio.bio.value.trim();
+  persist();
+  renderAll();
+  alert('Perfil do estúdio salvo.');
+}
+
+function handleStudioLogoUpload(event) {
+  const [file] = event.target.files;
+  if (!file) return;
+  if (file.size > 1_200_000) {
+    alert('Use uma imagem de até 1,2 MB para o logo do estúdio.');
+    event.target.value = '';
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = () => {
+    state.studio.logoDataUrl = String(reader.result || '');
+    persist();
+    renderAll();
+    alert('Logo do estúdio atualizada.');
+  };
+  reader.readAsDataURL(file);
+  event.target.value = '';
+}
+
+function removeStudioLogo() {
+  if (!state.studio.logoDataUrl) return;
+  if (!confirm('Remover o logo atual do estúdio?')) return;
+  state.studio.logoDataUrl = '';
+  persist();
+  renderAll();
+}
+
 function upsert(collection, payload) {
   const index = state[collection].findIndex((item) => item.id === payload.id);
   if (index >= 0) {
@@ -627,6 +894,11 @@ function upsert(collection, payload) {
   saveAndRender();
 }
 
+function saveAndRender() {
+  persist();
+  renderAll();
+}
+
 function removeById(collection, id) {
   state[collection] = state[collection].filter((item) => item.id !== id);
   saveAndRender();
@@ -635,7 +907,7 @@ function removeById(collection, id) {
 function editPatient(id) {
   const item = state.patients.find((patient) => patient.id === id);
   if (!item) return;
-  openSection('pacientes');
+  openAdminSection('pacientes');
   inputs.patient.id.value = item.id;
   inputs.patient.name.value = item.name;
   inputs.patient.age.value = item.age;
@@ -659,7 +931,7 @@ function deletePatient(id) {
 function editAppointment(id) {
   const item = state.appointments.find((entry) => entry.id === id);
   if (!item) return;
-  openSection('agenda');
+  openAdminSection('agenda');
   inputs.appointment.id.value = item.id;
   inputs.appointment.patientId.value = item.patientId;
   inputs.appointment.date.value = item.date;
@@ -680,7 +952,7 @@ function deleteAppointment(id) {
 function editEvolution(id) {
   const item = state.evolutions.find((entry) => entry.id === id);
   if (!item) return;
-  openSection('evolucao');
+  openAdminSection('evolucao');
   inputs.evolution.id.value = item.id;
   inputs.evolution.patientId.value = item.patientId;
   inputs.evolution.date.value = item.date;
@@ -699,7 +971,7 @@ function deleteEvolution(id) {
 function editPlan(id) {
   const item = state.plans.find((entry) => entry.id === id);
   if (!item) return;
-  openSection('planos');
+  openAdminSection('planos');
   inputs.plan.id.value = item.id;
   inputs.plan.patientId.value = item.patientId;
   inputs.plan.title.value = item.title;
@@ -717,7 +989,7 @@ function deletePlan(id) {
 function editFinance(id) {
   const item = state.finances.find((entry) => entry.id === id);
   if (!item) return;
-  openSection('financeiro');
+  openAdminSection('financeiro');
   inputs.finance.id.value = item.id;
   inputs.finance.patientId.value = item.patientId;
   inputs.finance.description.value = item.description;
@@ -772,8 +1044,20 @@ function resetFinanceForm() {
   populatePatientSelects();
 }
 
+function resetAllForms() {
+  resetPatientForm();
+  resetAppointmentForm();
+  resetEvolutionForm();
+  resetPlanForm();
+  resetFinanceForm();
+}
+
 function sortAppointments(list) {
   return [...list].sort((a, b) => `${a.date} ${a.time}`.localeCompare(`${b.date} ${b.time}`));
+}
+
+function getPatientName(patientId) {
+  return state.patients.find((item) => item.id === patientId)?.name || 'Paciente removido';
 }
 
 function statusTone(status) {
@@ -804,7 +1088,7 @@ function exportState() {
   const url = URL.createObjectURL(blob);
   const anchor = document.createElement('a');
   anchor.href = url;
-  anchor.download = `fisio-backup-${todayISO()}.json`;
+  anchor.download = `pulse-studio-backup-${todayISO()}.json`;
   anchor.click();
   URL.revokeObjectURL(url);
 }
@@ -816,8 +1100,11 @@ function importState(event) {
   reader.onload = () => {
     try {
       const parsed = JSON.parse(reader.result);
+      const currentLogin = state.session.loggedIn;
       state = normalizeState(parsed);
-      saveAndRender();
+      state.session.loggedIn = currentLogin && hasConfiguredAccess();
+      persist();
+      renderAll();
       resetAllForms();
       alert('Dados importados com sucesso.');
     } catch {
@@ -828,72 +1115,13 @@ function importState(event) {
   event.target.value = '';
 }
 
-function normalizeState(raw) {
-  const source = raw && typeof raw === 'object' ? raw : {};
-  return {
-    patients: Array.isArray(source.patients)
-      ? source.patients.map((item) => ({
-          id: String(item?.id || uid('patient')),
-          name: String(item?.name || 'Paciente sem nome'),
-          age: String(item?.age || ''),
-          complaint: String(item?.complaint || ''),
-          frequency: String(item?.frequency || ''),
-          tags: Array.isArray(item?.tags) ? item.tags.map((tag) => String(tag)) : []
-        }))
-      : [],
-    appointments: Array.isArray(source.appointments)
-      ? source.appointments.map((item) => ({
-          id: String(item?.id || uid('appointment')),
-          patientId: String(item?.patientId || ''),
-          date: normalizeDate(item?.date),
-          time: String(item?.time || ''),
-          type: String(item?.type || ''),
-          status: String(item?.status || 'pendente'),
-          fee: String(item?.fee || ''),
-          notes: String(item?.notes || '')
-        }))
-      : [],
-    evolutions: Array.isArray(source.evolutions)
-      ? source.evolutions.map((item) => ({
-          id: String(item?.id || uid('evolution')),
-          patientId: String(item?.patientId || ''),
-          date: normalizeDate(item?.date),
-          pain: String(item?.pain || ''),
-          summary: String(item?.summary || ''),
-          next: String(item?.next || '')
-        }))
-      : [],
-    plans: Array.isArray(source.plans)
-      ? source.plans.map((item) => ({
-          id: String(item?.id || uid('plan')),
-          patientId: String(item?.patientId || ''),
-          title: String(item?.title || ''),
-          goals: String(item?.goals || ''),
-          exercises: String(item?.exercises || '')
-        }))
-      : [],
-    finances: Array.isArray(source.finances)
-      ? source.finances.map((item) => ({
-          id: String(item?.id || uid('finance')),
-          patientId: String(item?.patientId || ''),
-          description: String(item?.description || ''),
-          date: normalizeDate(item?.date),
-          amount: String(item?.amount || ''),
-          status: String(item?.status || 'pendente')
-        }))
-      : []
-  };
+function openAdminSection(target) {
+  adminLinks.forEach((item) => item.classList.toggle('active', item.dataset.adminSection === target));
+  adminSections.forEach((section) => section.classList.toggle('active', section.id === `admin-section-${target}`));
+  updateAdminTitle();
 }
 
-function resetAllForms() {
-  resetPatientForm();
-  resetAppointmentForm();
-  resetEvolutionForm();
-  resetPlanForm();
-  resetFinanceForm();
-}
-
-function openSection(target) {
-  navLinks.forEach((item) => item.classList.toggle('active', item.dataset.section === target));
-  sections.forEach((section) => section.classList.toggle('active', section.id === `section-${target}`));
+function updateAdminTitle() {
+  const active = document.querySelector('.admin-link.active')?.dataset.adminSection || 'dashboard';
+  refs.adminPageTitle.textContent = adminTitles[active] || 'Painel de gestão';
 }
