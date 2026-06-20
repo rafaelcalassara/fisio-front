@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Fisio • Operação Clínica</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div>
+          <div class="brand">
+            <div class="brand-mark">F</div>
+            <div>
+              <strong>Fisio</strong>
+              <span>Operação clínica</span>
+            </div>
+          </div>
+
+          <nav class="nav">
+            <button class="nav-link active" data-section="dashboard">Dashboard</button>
+            <button class="nav-link" data-section="agenda">Agenda</button>
+            <button class="nav-link" data-section="pacientes">Pacientes</button>
+            <button class="nav-link" data-section="evolucao">Evolução</button>
+            <button class="nav-link" data-section="planos">Planos</button>
+            <button class="nav-link" data-section="financeiro">Financeiro</button>
+          </nav>
+        </div>
+
+        <div class="sidebar-footer">
+          <p>Versão inicial pensada para clínica de fisioterapia/pilates.</p>
+          <span>Foco: operação simples, agenda e prontuário.</span>
+        </div>
+      </aside>
+
+      <main class="content">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Protótipo publicável</p>
+            <h1>Frontend base para a aplicação de fisio</h1>
+          </div>
+          <div class="topbar-actions">
+            <button class="ghost-btn">Exportar agenda</button>
+            <button class="primary-btn">Nova sessão</button>
+          </div>
+        </header>
+
+        <section class="hero-card">
+          <div>
+            <p class="eyebrow">Objetivo do sistema</p>
+            <h2>Tirar a operação do WhatsApp e colocar numa tela simples.</h2>
+            <p>
+              Agenda, pacientes, evolução, planos e visão financeira numa base só,
+              sem virar um ERP pesado.
+            </p>
+          </div>
+          <div class="hero-metrics" id="hero-metrics"></div>
+        </section>
+
+        <section class="requirements-panel card">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Requisitos já mapeados</p>
+              <h3>O que já temos de concreto</h3>
+            </div>
+            <span class="badge">v0 mapeado</span>
+          </div>
+          <div class="requirements-grid" id="requirements-grid"></div>
+        </section>
+
+        <section class="section active" id="section-dashboard">
+          <div class="dashboard-grid">
+            <article class="card span-2">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">Hoje</p>
+                  <h3>Agenda do dia</h3>
+                </div>
+                <span class="badge success">Operação viva</span>
+              </div>
+              <div class="agenda-list" id="agenda-list"></div>
+            </article>
+
+            <article class="card">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">Pacientes</p>
+                  <h3>Status rápido</h3>
+                </div>
+              </div>
+              <div class="patient-status" id="patient-status"></div>
+            </article>
+
+            <article class="card">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">Pendências</p>
+                  <h3>Fila operacional</h3>
+                </div>
+              </div>
+              <ul class="check-list" id="queue-list"></ul>
+            </article>
+
+            <article class="card span-3">
+              <div class="section-heading compact">
+                <div>
+                  <p class="eyebrow">Loop</p>
+                  <h3>Ciclo de desenvolvimento sugerido</h3>
+                </div>
+              </div>
+              <div class="loop-grid" id="loop-grid"></div>
+            </article>
+          </div>
+        </section>
+
+        <section class="section" id="section-agenda">
+          <article class="card">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">Agenda</p>
+                <h3>Visão semanal</h3>
+              </div>
+              <span class="badge">simples primeiro</span>
+            </div>
+            <div class="week-grid" id="week-grid"></div>
+          </article>
+        </section>
+
+        <section class="section" id="section-pacientes">
+          <article class="card">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">Pacientes</p>
+                <h3>Cadastro resumido</h3>
+              </div>
+            </div>
+            <div class="patient-cards" id="patient-cards"></div>
+          </article>
+        </section>
+
+        <section class="section" id="section-evolucao">
+          <article class="card">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">Prontuário</p>
+                <h3>Evolução de atendimentos</h3>
+              </div>
+            </div>
+            <div class="timeline" id="timeline"></div>
+          </article>
+        </section>
+
+        <section class="section" id="section-planos">
+          <article class="card">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">Plano terapêutico</p>
+                <h3>Protocolos e exercícios</h3>
+              </div>
+            </div>
+            <div class="plan-grid" id="plan-grid"></div>
+          </article>
+        </section>
+
+        <section class="section" id="section-financeiro">
+          <article class="card">
+            <div class="section-heading compact">
+              <div>
+                <p class="eyebrow">Financeiro</p>
+                <h3>Receita e inadimplência</h3>
+              </div>
+            </div>
+            <div class="finance-grid" id="finance-grid"></div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="./script.js"></script>
+  </body>
+</html>
