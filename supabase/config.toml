@@ -1,0 +1,10 @@
+# Supabase config for functions with @supabase/server
+
+[functions.secure-api]
+# For auth: "user" mode, keep verify_jwt = true (default)
+# For "publishable" or "secret" or "none", set verify_jwt = false
+verify_jwt = true
+
+# You can add more functions here
+# [functions.another]
+# verify_jwt = false
